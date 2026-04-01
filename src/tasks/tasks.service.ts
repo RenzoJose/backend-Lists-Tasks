@@ -1,10 +1,10 @@
 import 'dotenv/config'
-import { PrismaLibSql } from '@prisma/adapter-libsql'
 import { PrismaClient } from '../../generated/prisma/client.ts'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! })
-const prisma = new PrismaClient({ adapter })
-
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+})
 // Obtener todas las tareas
 export const getAllTasks = async () => {
   return prisma.task.findMany({
