@@ -4,18 +4,23 @@ import tasksRouter from './tasks/tasks.routes'
 const app = express()
 
 // CORS — permite peticiones desde el frontend (Vite en dev)
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174']
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://frontend-lists-tasks-todo.vercel.app'];
+
 app.use((_req, res, next) => {
   const origin = _req.headers.origin
+
   if (origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin)
   }
+  res.setHeader('Vary', 'Origin') // 👈 IMPORTANTE
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+
   if (_req.method === 'OPTIONS') {
-    res.sendStatus(200)
-    return
+    return res.sendStatus(200)
   }
+
   next()
 })
 
