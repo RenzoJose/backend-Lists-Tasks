@@ -10,8 +10,5 @@ export default defineConfig({
   },
   datasource: {
     url: process.env["DIRECT_URL"],
-    
-    // url: process.env["DIRECT_URL"], //prueba local .env
-    // directUrl: process.env[""] || process.env.DIRECT_URL,
   },
 });
