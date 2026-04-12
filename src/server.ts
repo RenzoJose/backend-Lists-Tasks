@@ -1,6 +1,6 @@
 import app from './app'
 
-const PORT = process.env.PORT || 10000
+const PORT = process.env.PORT || 10000 || 3000
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto:${PORT}`)
