@@ -9,9 +9,9 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATA_BASE_URL"],
+    url: process.env["DIRECT_URL"],
     
     // url: process.env["DIRECT_URL"], //prueba local .env
-    // directUrl: process.env[""],
+    // directUrl: process.env[""] || process.env.DIRECT_URL,
   },
 });
