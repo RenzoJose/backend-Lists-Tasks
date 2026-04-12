@@ -8,7 +8,8 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
   },
-  datasource: {
-    url: process.env["DIRECT_URL"],
-  },
+ datasource: {
+  url: process.env["DATABASE_URL"],        // pooler :6543 → runtime
+  shadowDatabaseUrl: process.env["DIRECT_URL"],  // directo :5432 → migraciones
+},
 });
