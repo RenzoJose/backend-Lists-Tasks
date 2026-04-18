@@ -1,8 +1,12 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import * as tasksController from './tasks.controller.ts'
+import { authMiddleware } from '../middleware/auth.middleware.ts'
 
 const router = Router()
+
+// Todas las rutas de tasks requieren autenticación
+router.use(authMiddleware)
 
 // ── Validaciones ──────────────────────────────────────────
 const titleRequired = body('title')

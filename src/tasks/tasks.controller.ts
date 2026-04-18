@@ -4,14 +4,14 @@ import * as tasksService from './tasks.service.ts'
 
 // GET /api/tasks
 export const getAll = async (req: Request, res: Response) => {
-  const tasks = await tasksService.getAllTasks()
+  const tasks = await tasksService.getAllTasks(req.user!.id)
   res.json(tasks)
 }
 
 // GET /api/tasks/:id
 export const getById = async (req: Request, res: Response) => {
   const id = Number(req.params.id)
-  const task = await tasksService.getTaskById(id)
+  const task = await tasksService.getTaskById(id, req.user!.id)
 
   if (!task) {
     res.status(404).json({ error: 'Tarea no encontrada' })
@@ -30,7 +30,7 @@ export const create = async (req: Request, res: Response) => {
   }
 
   const { title, description, priority, status, dueDate, category, order } = req.body
-  const task = await tasksService.createTask({ title, description, priority, status, dueDate, category, order })
+  const task = await tasksService.createTask(req.user!.id, { title, description, priority, status, dueDate, category, order })
   res.status(201).json(task)
 }
 
@@ -43,30 +43,25 @@ export const update = async (req: Request, res: Response) => {
   }
 
   const id = Number(req.params.id)
-  const exists = await tasksService.getTaskById(id)
-
-  if (!exists) {
-    res.status(404).json({ error: 'Tarea no encontrada' })
-    return
-  }
-
   const { title, description, completed, priority, status, dueDate, category, order } = req.body
-  const task = await tasksService.updateTask(id, { title, description, completed, priority, status, dueDate, category, order })
-  res.json(task)
+
+  try {
+    const task = await tasksService.updateTask(id, req.user!.id, { title, description, completed, priority, status, dueDate, category, order })
+    res.json(task)
+  } catch {
+    res.status(404).json({ error: 'Tarea no encontrada' })
+  }
 }
-
-
 
 // DELETE /api/tasks/:id
 export const remove = async (req: Request, res: Response) => {
   const id = Number(req.params.id)
-  const exists = await tasksService.getTaskById(id)
 
-  if (!exists) {
+  try {
+    await tasksService.deleteTask(id, req.user!.id)
+    res.status(204).send()
+  } catch {
     res.status(404).json({ error: 'Tarea no encontrada' })
-    return
   }
-
-  await tasksService.deleteTask(id)
-  res.status(204).send()
 }
+

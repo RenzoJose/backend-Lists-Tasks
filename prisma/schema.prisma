@@ -10,6 +10,14 @@ datasource db {
   provider  = "postgresql"
 }
 
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  tasks        Task[]
+}
+
 model Task {
   id          Int       @id @default(autoincrement())
   title       String
@@ -17,11 +25,13 @@ model Task {
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())
 
-  // Campos nuevos
   priority    String    @default("medium")
   status      String    @default("pending")
   dueDate     DateTime?
   updatedAt   DateTime  @default(now()) @updatedAt
   category    String?
   order       Int       @default(0)
+
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
 }
