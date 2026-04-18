@@ -5,21 +5,23 @@ import { PrismaPg } from '@prisma/adapter-pg'
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 })
-// Obtener todas las tareas
-export const getAllTasks = async () => {
+
+// Obtener todas las tareas del usuario
+export const getAllTasks = async (userId: number) => {
   return prisma.task.findMany({
+    where: { userId },
     orderBy: { createdAt: 'desc' },
   })
 }
 
-// Obtener una tarea por ID
-export const getTaskById = async (id: number) => {
+// Obtener una tarea por ID (solo si pertenece al usuario)
+export const getTaskById = async (id: number, userId: number) => {
   return prisma.task.findUnique({
-    where: { id },
+    where: { id, userId },
   })
 }
 
-export const createTask = async (data: {
+export const createTask = async (userId: number, data: {
   title: string
   description?: string
   priority?: string
@@ -29,12 +31,13 @@ export const createTask = async (data: {
   order?: number
 }) => {
   return prisma.task.create({
-    data,
+    data: { ...data, userId },
   })
 }
 
 export const updateTask = async (
   id: number,
+  userId: number,
   data: {
     title?: string
     description?: string
@@ -47,14 +50,14 @@ export const updateTask = async (
   }
 ) => {
   return prisma.task.update({
-    where: { id },
+    where: { id, userId },
     data,
   })
 }
 
-// Eliminar una tarea
-export const deleteTask = async (id: number) => {
+// Eliminar una tarea (solo si pertenece al usuario)
+export const deleteTask = async (id: number, userId: number) => {
   return prisma.task.delete({
-    where: { id },
+    where: { id, userId },
   })
 }
