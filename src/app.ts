@@ -4,13 +4,14 @@ import authRouter from './auth/auth.routes'
 
 const app = express()
 
-// CORS — permite peticiones desde el frontend (Vite en dev)
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'https://frontend-lists-tasks-todo.vercel.app'];
+// CORS — permite peticiones desde el frontend (Vite en dev + Vercel previews)
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOriginPattern = /^https:\/\/frontend-lists-tasks-todo[^.]*\.vercel\.app$/;
 
 app.use((_req, res, next) => {
   const origin = _req.headers.origin
 
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && (allowedOrigins.includes(origin) || allowedOriginPattern.test(origin))) {
     res.setHeader('Access-Control-Allow-Origin', origin)
   }
   res.setHeader('Vary', 'Origin') // 👈 IMPORTANTE
