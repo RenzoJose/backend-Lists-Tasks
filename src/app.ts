@@ -1,5 +1,6 @@
 import express from 'express'
 import tasksRouter from './tasks/tasks.routes'
+import authRouter from './auth/auth.routes'
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use((_req, res, next) => {
 app.use(express.json())
 
 // Rutas de la API
+app.use('/api/auth', authRouter)
 app.use('/api/tasks', tasksRouter)
 
 // Ruta raíz de comprobación
