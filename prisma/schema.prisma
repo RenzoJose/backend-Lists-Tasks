@@ -16,6 +16,12 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   tasks        Task[]
+
+  emailVerified              Boolean   @default(false)
+  emailVerificationToken     String?   @unique
+  emailVerificationExpiry    DateTime?
+  passwordResetToken         String?   @unique
+  passwordResetExpiry        DateTime?
 }
 
 model Task {

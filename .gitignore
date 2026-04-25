@@ -8,6 +8,7 @@ prisma/dev.db-journal
 # doc
 SETUP.md
 PLAN.md
+EMAIL_VERIFICATION.md
 
 # Copilot
 .github
