@@ -6,8 +6,7 @@ const app = express()
 
 // CORS — permite peticiones desde el frontend (Vite en dev + Vercel previews)
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
-const allowedOriginPattern = /^https:\/\/frontend-lists-tasks-todo[^.]*\.vercel\.app$/;
-
+const allowedOriginPattern = /^https:\/\/frontend-lists-tasks[a-zA-Z0-9\-]*\.vercel\.app$/;
 app.use((_req, res, next) => {
   const origin = _req.headers.origin
 
